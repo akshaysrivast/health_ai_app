@@ -1,0 +1,10 @@
+version: 1
+rules:
+  - id: elevated_hba1c
+    description: Mark risk as elevated when HbA1c exceeds threshold.
+    when:
+      biomarker: hba1c
+      operator: ">"
+      value: 6.4
+    then:
+      risk_level: elevated
