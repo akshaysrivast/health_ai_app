@@ -1,0 +1,42 @@
+{
+  "info": {
+    "name": "Metabolic AI Pipeline",
+    "_postman_id": "f4d73006-f762-4f00-b67e-c01458fc4c56",
+    "description": "End-to-end backend analyze call that triggers full metabolic AI pipeline and returns report.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Analyze Patient (Full Pipeline)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{backend_url}}/analyze",
+          "host": [
+            "{{backend_url}}"
+          ],
+          "path": [
+            "analyze"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"demographics\": {\n    \"patient_id\": \"PAT-2026-0001\",\n    \"name\": \"Neha Sharma\",\n    \"age\": 47,\n    \"sex\": \"female\"\n  },\n  \"labs\": [\n    {\n      \"name\": \"hba1c\",\n      \"value\": 7.2,\n      \"unit\": \"%\"\n    },\n    {\n      \"name\": \"fasting_glucose\",\n      \"value\": 142,\n      \"unit\": \"mg/dL\"\n    },\n    {\n      \"name\": \"triglycerides\",\n      \"value\": 218,\n      \"unit\": \"mg/dL\"\n    },\n    {\n      \"name\": \"hdl\",\n      \"value\": 38,\n      \"unit\": \"mg/dL\"\n    }\n  ],\n  \"anthropometry\": {\n    \"height_cm\": 160,\n    \"weight_kg\": 82,\n    \"waist_cm\": 98\n  },\n  \"lifestyle\": {\n    \"physical_activity_level\": \"low\",\n    \"sleep_hours\": 5.8,\n    \"diet_pattern\": \"high_refined_carbohydrate\"\n  },\n  \"history\": {\n    \"family_history_diabetes\": true,\n    \"hypertension\": true\n  },\n  \"features\": {},\n  \"risks\": {},\n  \"diagnosis\": {},\n  \"plan\": {}\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "backend_url",
+      "value": "http://localhost:8080"
+    }
+  ]
+}

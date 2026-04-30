@@ -5,6 +5,25 @@ spring:
 server:
   port: 8080
 
+orchestrator:
+  api:
+    base-url: ${ORCHESTRATOR_API_BASE_URL:http://localhost:8000}
+    analyze-path: ${ORCHESTRATOR_API_ANALYZE_PATH:/run-workflow}
+
+integrations:
+  auth:
+    enabled: ${AUTH_INTEGRATION_ENABLED:false}
+    issuer: ${AUTH_ISSUER:}
+    audience: ${AUTH_AUDIENCE:}
+  abha:
+    enabled: ${ABHA_INTEGRATION_ENABLED:false}
+    base-url: ${ABHA_BASE_URL:}
+
+security:
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    requests-per-minute: ${RATE_LIMIT_REQUESTS_PER_MINUTE:60}
+
 management:
   endpoints:
     web:

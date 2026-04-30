@@ -1,20 +1,155 @@
 version: "3.9"
 
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.6.1
+  feature-agent:
+    build:
+      context: ../../
+      dockerfile: agents/feature-agent/Dockerfile
+    container_name: feature-agent
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka:
-    image: confluentinc/cp-kafka:7.6.1
-    depends_on:
-      - zookeeper
+      PYTHONUNBUFFERED: "1"
     ports:
-      - "9092:9092"
+      - "8001:8000"
+    networks:
+      - metabolic-net
+
+  risk-agent:
+    build:
+      context: ../../
+      dockerfile: agents/risk-agent/Dockerfile
+    container_name: risk-agent
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      PYTHONUNBUFFERED: "1"
+      RISK_RULES_FILE: /app/shared/rule-engine/sample_rules.json
+      RULE_ENGINE_FILE: /app/shared/rule-engine/rule_engine.py
+    ports:
+      - "8002:8000"
+    networks:
+      - metabolic-net
+
+  diagnosis-agent:
+    build:
+      context: ../../
+      dockerfile: agents/diagnosis-agent/Dockerfile
+    container_name: diagnosis-agent
+    environment:
+      PYTHONUNBUFFERED: "1"
+      DIAGNOSIS_RULES_FILE: /app/agents/diagnosis-agent/config/diagnosis_rules.json
+      RULE_ENGINE_FILE: /app/shared/rule-engine/rule_engine.py
+      ENABLE_DIAGNOSIS_LLM_REFINEMENT: "false"
+    ports:
+      - "8003:8000"
+    networks:
+      - metabolic-net
+
+  treatment-agent:
+    build:
+      context: ../../
+      dockerfile: agents/treatment-agent/Dockerfile
+    container_name: treatment-agent
+    environment:
+      PYTHONUNBUFFERED: "1"
+      TREATMENT_PROTOCOLS_FILE: /app/agents/treatment-agent/config/treatment_protocols.json
+    ports:
+      - "8004:8000"
+    networks:
+      - metabolic-net
+
+  report-agent:
+    build:
+      context: ../../
+      dockerfile: agents/report-agent/Dockerfile
+    container_name: report-agent
+    environment:
+      PYTHONUNBUFFERED: "1"
+      REPORT_LLM_PROVIDER: template
+      REPORT_LLM_MODEL: gpt-4o-mini
+    ports:
+      - "8005:8000"
+    networks:
+      - metabolic-net
+
+  orchestrator:
+    build:
+      context: ../../
+      dockerfile: orchestrator/Dockerfile
+    container_name: orchestrator
+    environment:
+      PYTHONUNBUFFERED: "1"
+      FEATURE_AGENT_URL: http://feature-agent:8000/compute-features
+      RISK_AGENT_URL: http://risk-agent:8000/compute-risks
+      DIAGNOSIS_AGENT_URL: http://diagnosis-agent:8000/diagnose
+      TREATMENT_AGENT_URL: http://treatment-agent:8000/treatment-plan
+      REPORT_AGENT_URL: http://report-agent:8000/generate-report
+      AGENT_REQUEST_TIMEOUT_SECONDS: "20"
+      TEMPORAL_ADDRESS: host.docker.internal:7233
+      TEMPORAL_TASK_QUEUE: metabolic-ai-task-queue
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: metabolic_ai
+      POSTGRES_USER: metabolic
+      POSTGRES_PASSWORD: metabolic
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      feature-agent:
+        condition: service_started
+      risk-agent:
+        condition: service_started
+      diagnosis-agent:
+        condition: service_started
+      treatment-agent:
+        condition: service_started
+      report-agent:
+        condition: service_started
+    networks:
+      - metabolic-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: metabolic-postgres
+    environment:
+      POSTGRES_DB: metabolic_ai
+      POSTGRES_USER: metabolic
+      POSTGRES_PASSWORD: metabolic
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metabolic -d metabolic_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - metabolic-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: metabolic-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - metabolic-net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  metabolic-net:
+    driver: bridge

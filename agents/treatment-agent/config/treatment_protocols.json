@@ -1,0 +1,103 @@
+{
+  "protocols": {
+    "type_2_diabetes_mellitus": {
+      "diet_plan": {
+        "actions": [
+          "Adopt low-glycemic meals with controlled carbohydrate portions",
+          "Increase fiber intake to at least 25g daily",
+          "Limit refined sugars and sweetened beverages"
+        ]
+      },
+      "exercise": {
+        "actions": [
+          "Perform 150 minutes/week of moderate aerobic activity",
+          "Add resistance training at least 2 sessions per week"
+        ]
+      },
+      "sleep": {
+        "actions": [
+          "Target 7-8 hours sleep nightly",
+          "Maintain consistent sleep and wake times"
+        ]
+      },
+      "medication_suggestions": [
+        {
+          "name": "Metformin (evaluation required)",
+          "note": "First-line option in many T2DM patients, clinician to confirm suitability"
+        }
+      ]
+    },
+    "prediabetes": {
+      "diet_plan": {
+        "actions": [
+          "Follow calorie-aware Mediterranean-style diet",
+          "Reduce processed carbohydrates"
+        ]
+      },
+      "exercise": {
+        "actions": [
+          "Aim for 150 minutes/week brisk walking",
+          "Incorporate strength training 2 times/week"
+        ]
+      },
+      "sleep": {
+        "actions": [
+          "Improve sleep hygiene and avoid late caffeine"
+        ]
+      },
+      "medication_suggestions": [
+        {
+          "name": "No routine medication",
+          "note": "Lifestyle modification is preferred; clinician may evaluate metformin in select cases"
+        }
+      ]
+    },
+    "metabolic_syndrome_possible": {
+      "diet_plan": {
+        "actions": [
+          "Reduce saturated fat and ultra-processed foods",
+          "Increase intake of vegetables, lean proteins, and whole grains"
+        ]
+      },
+      "exercise": {
+        "actions": [
+          "Add 30-45 minutes daily mixed cardio and mobility work"
+        ]
+      },
+      "sleep": {
+        "actions": [
+          "Screen for poor sleep quality and potential sleep apnea symptoms"
+        ]
+      },
+      "medication_suggestions": [
+        {
+          "name": "Risk-factor targeted therapy",
+          "note": "Medication depends on BP, lipid profile, and glucose status"
+        }
+      ]
+    }
+  },
+  "default_protocol": {
+    "diet_plan": {
+      "actions": [
+        "Follow balanced whole-food diet with portion control"
+      ]
+    },
+    "exercise": {
+      "actions": [
+        "Engage in regular physical activity at least 5 days/week"
+      ]
+    },
+    "sleep": {
+      "actions": [
+        "Maintain consistent sleep routine with 7-8 hours/night"
+      ]
+    },
+    "medication_suggestions": [
+      {
+        "name": "Clinical evaluation needed",
+        "note": "No direct protocol match, clinician-guided treatment required"
+      }
+    ]
+  }
+}

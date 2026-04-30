@@ -1,0 +1,48 @@
+{
+  "demographics": {
+    "patient_id": "PAT-2026-0001",
+    "name": "Neha Sharma",
+    "age": 47,
+    "sex": "female"
+  },
+  "labs": [
+    {
+      "name": "hba1c",
+      "value": 7.2,
+      "unit": "%"
+    },
+    {
+      "name": "fasting_glucose",
+      "value": 142,
+      "unit": "mg/dL"
+    },
+    {
+      "name": "triglycerides",
+      "value": 218,
+      "unit": "mg/dL"
+    },
+    {
+      "name": "hdl",
+      "value": 38,
+      "unit": "mg/dL"
+    }
+  ],
+  "anthropometry": {
+    "height_cm": 160,
+    "weight_kg": 82,
+    "waist_cm": 98
+  },
+  "lifestyle": {
+    "physical_activity_level": "low",
+    "sleep_hours": 5.8,
+    "diet_pattern": "high_refined_carbohydrate"
+  },
+  "history": {
+    "family_history_diabetes": true,
+    "hypertension": true
+  },
+  "features": {},
+  "risks": {},
+  "diagnosis": {},
+  "plan": {}
+}

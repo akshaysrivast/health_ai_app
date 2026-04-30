@@ -1,5 +1,4 @@
-patient.ingested
-risk.computed
-diagnosis.generated
-treatment.planned
-report.compiled
+features
+risks
+diagnosis
+treatment

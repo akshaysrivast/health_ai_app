@@ -1,0 +1,38 @@
+[
+  {
+    "name": "high_hba1c_risk",
+    "conditions": [
+      { "field": "labs.hba1c", "operator": ">=", "value": 6.5 },
+      { "field": "anthropometry.bmi", "operator": ">=", "value": 30 }
+    ],
+    "logic": "AND",
+    "output": {
+      "risk_level": "high",
+      "risk_tags": ["glycemic", "obesity"]
+    }
+  },
+  {
+    "name": "prediabetes_flag",
+    "conditions": [
+      { "field": "labs.hba1c", "operator": ">=", "value": 5.7 },
+      { "field": "labs.hba1c", "operator": "<", "value": 6.5 }
+    ],
+    "logic": "AND",
+    "output": {
+      "risk_level": "moderate",
+      "recommendation": "lifestyle_intervention"
+    }
+  },
+  {
+    "name": "hypertension_or_obesity",
+    "conditions": [
+      { "field": "vitals.systolic_bp", "operator": ">=", "value": 140 },
+      { "field": "anthropometry.bmi", "operator": ">=", "value": 30 }
+    ],
+    "logic": "OR",
+    "output": {
+      "risk_level": "elevated",
+      "risk_tags": ["cardiometabolic"]
+    }
+  }
+]

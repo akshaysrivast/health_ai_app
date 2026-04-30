@@ -1,0 +1,44 @@
+[
+  {
+    "name": "likely_type2_diabetes",
+    "conditions": [
+      { "field": "labs.hba1c", "operator": ">=", "value": 6.5 },
+      { "field": "features.bmi", "operator": ">=", "value": 27.0 }
+    ],
+    "logic": "AND",
+    "output": {
+      "diagnosis": "type_2_diabetes_mellitus",
+      "base_confidence": 0.78,
+      "risk_weight": 0.1,
+      "rationale": "Elevated HbA1c with obesity-associated metabolic profile"
+    }
+  },
+  {
+    "name": "prediabetes_profile",
+    "conditions": [
+      { "field": "labs.hba1c", "operator": ">=", "value": 5.7 },
+      { "field": "labs.hba1c", "operator": "<", "value": 6.5 }
+    ],
+    "logic": "AND",
+    "output": {
+      "diagnosis": "prediabetes",
+      "base_confidence": 0.68,
+      "risk_weight": 0.05,
+      "rationale": "Intermediate glycemic burden without diabetes threshold crossing"
+    }
+  },
+  {
+    "name": "metabolic_syndrome_suspected",
+    "conditions": [
+      { "field": "features.waist_to_height_ratio", "operator": ">=", "value": 0.5 },
+      { "field": "anthropometry.bmi", "operator": ">=", "value": 30.0 }
+    ],
+    "logic": "OR",
+    "output": {
+      "diagnosis": "metabolic_syndrome_possible",
+      "base_confidence": 0.62,
+      "risk_weight": 0.08,
+      "rationale": "Central adiposity or obesity pattern consistent with metabolic syndrome risk"
+    }
+  }
+]

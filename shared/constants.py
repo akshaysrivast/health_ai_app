@@ -1,0 +1,5 @@
+FEATURES_COMPUTED = "features.computed"
+RISKS_COMPUTED = "risks.computed"
+DIAGNOSIS_READY = "diagnosis.ready"
+TREATMENT_READY = "treatment.ready"
+REPORT_READY = "report.ready"
